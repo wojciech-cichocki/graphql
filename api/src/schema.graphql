@@ -1,4 +1,5 @@
 type Query {
+  test: String!
   login(data: LoginInput): String!
   me: User!
   users(query: String): [User!]!
