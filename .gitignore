@@ -1,6 +1,9 @@
 #webstorm
 .idea
 
+#npm project
+package-lock.json
+
 # Logs
 logs
 *.log
