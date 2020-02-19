@@ -54,13 +54,14 @@ type User {
   name: String!
   posts: [Post!]!
   comments: [Comment!]!
-  sessions: [Session!]!
+  #  sessions: [Session!]!
 }
 
-type Session {
-  ip: String!
-  client: String!
-}
+#TODO: add sessiona
+#type Session {
+#  ip: String!
+#  client: String!
+#}
 
 type Post {
   id: ID!
