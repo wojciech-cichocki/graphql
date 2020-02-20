@@ -57,7 +57,7 @@ type User {
   #  sessions: [Session!]!
 }
 
-#TODO: add sessiona
+#TODO: add sessions
 #type Session {
 #  ip: String!
 #  client: String!
