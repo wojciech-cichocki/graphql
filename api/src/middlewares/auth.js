@@ -3,7 +3,7 @@ import authUtility from "../utilities/auth";
 const auth = (resolve, parent, args, context, info) => {
   const user = authUtility.getUser(context.request);
 
-  if (!user) throw new Error("not authorized user");
+  if (!user) throw new Error("Not authenticated user");
   context.user = user;
 
   return resolve();
