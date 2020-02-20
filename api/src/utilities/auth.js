@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import db from "";
+import db from "../db";
 
 const config = {
   secret: "secret",
