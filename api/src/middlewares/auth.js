@@ -11,7 +11,14 @@ const auth = (resolve, parent, args, context, info) => {
 
 const authMiddleware = {
   Query: {
-    users: auth
+    test: auth,
+    me: auth,
+    users: auth,
+    posts: auth,
+    comment: auth,
+    user: auth,
+    post: auth,
+    comments: auth
   }
 };
 

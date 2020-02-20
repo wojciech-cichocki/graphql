@@ -7,7 +7,18 @@ const log = (resolve, parent, args, { request }, info) => {
 
 const loggingMiddleware = {
   Query: {
-    test: log
+    test: log,
+    login: log,
+    me: log,
+    users: log,
+    posts: log,
+    comment: log,
+    user: log,
+    post: log,
+    comments: log
+  },
+  Mutation: {
+    createUser: log
   }
 };
 

@@ -1,4 +1,5 @@
 import loggingMiddleware from "./middlewares/log";
+import authMiddleware from "./middlewares/auth";
 
 //TODO: make validation middleware
-export { loggingMiddleware as default };
+export { loggingMiddleware, authMiddleware as default };
