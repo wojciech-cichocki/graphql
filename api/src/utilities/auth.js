@@ -48,10 +48,20 @@ const findByCredentials = async (email, password) => {
   return user;
 };
 
+const verifyCredentials = async (user, password) => {
+  return await bcrypt.compare(password, user.password);
+};
+
 const hashPassword = async password => {
   return await bcrypt.hash(password, config.salt);
 };
 
-const authUtility = { getUser, createToken, findByCredentials, hashPassword };
+const authUtility = {
+  getUser,
+  createToken,
+  findByCredentials,
+  verifyCredentials,
+  hashPassword
+};
 
 export { authUtility as default };

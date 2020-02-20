@@ -11,6 +11,13 @@ const Mutation = {
     user.password = await authUtility.hashPassword(user.password);
     db.users.push(user);
     return authUtility.createToken(user);
+  },
+  async deleteMe(parent, { confirmPassword }, { db, user }, info) {
+    const isMatch = await authUtility.verifyCredentials(user, confirmPassword);
+
+    if (!isMatch) throw new Error("invalid confirmation password");
+
+    //TODO: handling deleting user
   }
 };
 
