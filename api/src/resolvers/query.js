@@ -1,3 +1,5 @@
+import authUtility from "../utilities/auth";
+
 const Query = {
   test() {
     return "graphql response";
@@ -18,6 +20,12 @@ const Query = {
   },
   me(parent, args, { user }, info) {
     return user;
+  },
+  async login(parent, args, { db }, info) {
+    const { email, password } = args.data;
+    const user = await authUtility.findByCredentials(email, password);
+
+    return authUtility.createToken(user);
   },
   posts(parent, { query }, { db }, info) {
     if (!query) {
