@@ -20,6 +20,25 @@ const Mutation = {
     const index = db.users.findIndex(u => u.id === user.id);
     db.users.splice(index, 1);
     return user;
+  },
+  updateMe(parent, { data }, { user }, info) {
+    //TODO: important validation (id, tokens mustn't be modified)
+    for (const key in user) {
+      if (data[key]) {
+        user[key] = data[key];
+      }
+    }
+    return user;
+  },
+  createPost(parent, { data }, { db, user }, info) {
+    const post = {
+      id: uuidv4(),
+      ...data,
+      author: user.id
+    };
+
+    db.post.push(post);
+    return post;
   }
 };
 

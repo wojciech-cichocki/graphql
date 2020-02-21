@@ -21,7 +21,9 @@ const authMiddleware = {
     comments: auth
   },
   Mutation: {
-    deleteMe: auth
+    deleteMe: auth,
+    updateMe: auth,
+    createPost: auth
   }
 };
 
