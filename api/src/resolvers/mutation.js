@@ -17,7 +17,9 @@ const Mutation = {
 
     if (!isMatch) throw new Error("invalid confirmation password");
 
-    //TODO: handling deleting user
+    const index = db.users.findIndex(u => u.id === user.id);
+    db.users.splice(index, 1);
+    return user;
   }
 };
 

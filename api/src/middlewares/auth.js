@@ -19,6 +19,9 @@ const authMiddleware = {
     user: auth,
     post: auth,
     comments: auth
+  },
+  Mutation: {
+    deleteMe: auth
   }
 };
 
