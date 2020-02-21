@@ -18,7 +18,11 @@ const loggingMiddleware = {
     comments: log
   },
   Mutation: {
-    createUser: log
+    createUser: log,
+    deleteMe: log,
+    updateMe: log,
+    createPost: log,
+    createComment: log
   }
 };
 

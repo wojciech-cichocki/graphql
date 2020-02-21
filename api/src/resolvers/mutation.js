@@ -13,6 +13,7 @@ const Mutation = {
     return authUtility.createToken(user);
   },
   async deleteMe(parent, { confirmPassword }, { db, user }, info) {
+    //TODO: add cascading deletion posts and comments
     const isMatch = await authUtility.verifyCredentials(user, confirmPassword);
 
     if (!isMatch) throw new Error("invalid confirmation password");
@@ -37,8 +38,18 @@ const Mutation = {
       author: user.id
     };
 
-    db.post.push(post);
+    db.posts.push(post);
     return post;
+  },
+  createComment(parent, { data }, { db, user }, info) {
+    const comment = {
+      id: uuidv4(),
+      ...data,
+      author: user.id
+    };
+
+    db.comments.push(comment);
+    return comment;
   }
 };
 

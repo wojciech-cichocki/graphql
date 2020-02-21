@@ -23,7 +23,8 @@ const authMiddleware = {
   Mutation: {
     deleteMe: auth,
     updateMe: auth,
-    createPost: auth
+    createPost: auth,
+    createComment: auth
   }
 };
 
