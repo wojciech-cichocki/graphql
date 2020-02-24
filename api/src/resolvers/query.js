@@ -49,12 +49,16 @@ const Query = {
     if (!post) throw new Error("post not found");
     return post;
   },
-  comments(parent, { query }, { db }, info) {
-    if (!query) return db.comments;
+  async comments(parent, { query }, { db }, info) {
+    if (query) throw new Error("Not supported yet");
 
-    return db.comments.filter(comment =>
-      comment.text.toLowerCase().includes(query.toLowerCase())
-    );
+    return await db.getAllComments();
+
+    // if (!query) return db.comments;
+    //
+    // return db.comments.filter(comment =>
+    //   comment.text.toLowerCase().includes(query.toLowerCase())
+    // );
   },
   comment(parent, { id }, { db }, info) {
     const comment = db.posts.find(comment => comment.id === id);

@@ -121,6 +121,36 @@ const getCommentsRelatedToPost = async (postId, selectionSet) => {
   });
 };
 
+const getUserRelatedToComment = async (commentId, selectionSet) => {
+  if (!(await checkCommentExist(commentId)))
+    throw new Error("Comment not found");
+
+  const users = await prisma.query.users({
+    where: {
+      comments_some: {
+        id: commentId
+      }
+    }
+  });
+
+  return users[0];
+};
+
+const getPostRelatedToComment = async (commentId, selectionSet) => {
+  if (!(await checkCommentExist(commentId)))
+    throw new Error("Comment not found");
+
+  const posts = await prisma.query.posts({
+    where: {
+      comments_some: {
+        id: commentId
+      }
+    }
+  });
+
+  return posts[0];
+};
+
 const getUserTokens = async userId => {
   if (!(await checkUserExist(userId))) throw new Error("User not found");
 
@@ -200,6 +230,8 @@ const db = {
   getCommentRelatedToUser,
   getUserRelatedToPost,
   getCommentsRelatedToPost,
+  getUserRelatedToComment,
+  getPostRelatedToComment,
 
   getUserTokens,
   addTokenToUser,
