@@ -22,11 +22,13 @@ const Query = {
   me(parent, args, { user }, info) {
     return user;
   },
-  async login(parent, args, context, info) {
+  async login(parent, args, { db }, info) {
     const { email, password } = args.data;
     const user = await authUtility.findByCredentials(email, password);
 
-    return authUtility.createToken(user);
+    console.log(user);
+
+    return await db.addTokenToUser(user.id);
   },
   posts(parent, { query }, { db }, info) {
     if (!query) {

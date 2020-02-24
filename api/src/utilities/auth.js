@@ -35,11 +35,14 @@ const createToken = userIs => {
 };
 
 const findByCredentials = async (email, password) => {
-  const user = db.users.find(user => user.email === email);
+  const user = await db.getUserByEmail(email);
 
   if (!user) throw new Error("Invalid login or password");
 
   const isMatch = await bcrypt.compare(password, user.password);
+
+  console.log(isMatch);
+
   if (!isMatch) return new Error("Invalid login or password");
 
   return user;

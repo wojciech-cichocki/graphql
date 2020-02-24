@@ -11,6 +11,19 @@ const getAllUser = async (query, selectionSet) => {
   if (!query) return prisma.query.users(null, selectionSet);
 };
 
+const getUserByEmail = async (email, selectionSet) => {
+  const user = await prisma.query.user(
+    {
+      where: {
+        email
+      }
+    },
+    selectionSet
+  );
+
+  return user;
+};
+
 const getAllPost = async selectionSet => {
   return prisma.query.posts(null, selectionSet);
 };
@@ -84,7 +97,10 @@ const getCommentRelatedToUser = async (postId, selectionSet) => {
 
 const getUserTokens = async userId => {
   console.log("getUserTokens");
-  if (!(await checkUserExist(userId))) throw new Error("User not found");
+  if (!(await checkUserExist(userId))) {
+    console.log("User not found");
+    throw new Error("User not found");
+  }
 
   const userById = await prisma.query.user(
     {
@@ -92,8 +108,6 @@ const getUserTokens = async userId => {
     },
     "{ tokens }"
   );
-
-  console.log(`user by id ${userById}`);
 
   return userById.tokens;
 };
@@ -151,9 +165,6 @@ const createUser = async (name, email, password) => {
       name,
       email,
       password: await auth.hashPassword(password)
-      // posts: [],
-      // comments: [],
-      // tokens: []
     }
   });
   return await addTokenToNewUser(user.id);
@@ -174,6 +185,7 @@ const db = {
   getAllComments,
 
   getUserById,
+  getUserByEmail,
   getPostById,
   getCommentById,
 
@@ -182,6 +194,7 @@ const db = {
 
   // checkUserIncludesToken,
   getUserTokens,
+  addTokenToUser,
   checkUserExist
 };
 
