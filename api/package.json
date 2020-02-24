@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
-    "db": "cd src/database && prisma deploy",
+    "start-api": "nodemon src/index.js --ext js,graphql --exec babel-node",
+    "start-db": "cd database && prisma deploy",
     "get-schema": "graphql get-schema -p prisma"
   },
   "keywords": [],

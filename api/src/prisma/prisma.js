@@ -2,7 +2,7 @@ import { Prisma } from "prisma-binding";
 import auth from "../utilities/auth";
 
 const prisma = new Prisma({
-  typeDefs: "src/generated/prisma.graphql",
+  typeDefs: "src/../generated/prisma.graphql",
   endpoint: "http://localhost:4466"
 });
 
