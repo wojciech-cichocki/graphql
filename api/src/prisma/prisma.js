@@ -21,7 +21,7 @@ const getUserByEmail = async (email, selectionSet) => {
   );
 };
 
-const getAllPost = async selectionSet => {
+const getAllPosts = async selectionSet => {
   return prisma.query.posts(null, selectionSet);
 };
 
@@ -78,7 +78,7 @@ const getPostRelatedToUser = async (userId, selectionSet) => {
 };
 
 const getCommentRelatedToUser = async (userId, selectionSet) => {
-  if (!(await checkUserExist(userId))) throw new Error("Post not found");
+  if (!(await checkUserExist(userId))) throw new Error("User not found");
 
   return await prisma.query.comments(
     {
@@ -90,6 +90,35 @@ const getCommentRelatedToUser = async (userId, selectionSet) => {
     },
     selectionSet
   );
+};
+
+const getUserRelatedToPost = async (postId, selectionSet) => {
+  if (!(await checkPostExist(postId))) throw new Error("Post not found");
+
+  const users = await prisma.query.users(
+    {
+      where: {
+        posts_some: {
+          id: postId
+        }
+      }
+    },
+    selectionSet
+  );
+
+  return users[0];
+};
+
+const getCommentsRelatedToPost = async (postId, selectionSet) => {
+  if (!(await checkPostExist(postId))) throw new Error("Post not found");
+
+  return await prisma.query.comments({
+    where: {
+      post: {
+        id: postId
+      }
+    }
+  });
 };
 
 const getUserTokens = async userId => {
@@ -159,7 +188,7 @@ const db = {
   createNewToken,
 
   getAllUser,
-  getAllPost,
+  getAllPosts,
   getAllComments,
 
   getUserById,
@@ -169,6 +198,8 @@ const db = {
 
   getPostRelatedToUser,
   getCommentRelatedToUser,
+  getUserRelatedToPost,
+  getCommentsRelatedToPost,
 
   getUserTokens,
   addTokenToUser,

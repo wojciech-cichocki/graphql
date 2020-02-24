@@ -28,18 +28,21 @@ const Query = {
 
     return await db.addTokenToUser(user.id);
   },
-  posts(parent, { query }, { db }, info) {
-    if (!query) {
-      return db.posts;
-    }
+  async posts(parent, { query }, { db }, info) {
+    if (query) throw new Error("Not supported yet");
 
-    return db.posts.filter(post => {
-      const isTitleMatch = post.title
-        .toLowerCase()
-        .includes(query.toLowerCase());
-      const isBodyMatch = post.body.toLowerCase().includes(query.toLowerCase());
-      return isTitleMatch || isBodyMatch;
-    });
+    return await db.getAllPosts();
+    // if (!query) {
+    //   return db.posts;
+    // }
+    //
+    // return db.posts.filter(post => {
+    //   const isTitleMatch = post.title
+    //     .toLowerCase()
+    //     .includes(query.toLowerCase());
+    //   const isBodyMatch = post.body.toLowerCase().includes(query.toLowerCase());
+    //   return isTitleMatch || isBodyMatch;
+    // });
   },
   post(parent, { id }, { db }, info) {
     const post = db.posts.find(post => post.id === id);

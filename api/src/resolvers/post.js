@@ -1,14 +1,10 @@
 const Post = {
-  author(parent, args, { db }, info) {
-    return db.users.find(user => {
-      return user.id === parent.author;
-    });
+  async author(parent, args, { db }, info) {
+    return await db.getUserRelatedToPost(parent.id);
   },
-  comments(parent, args, { db }, info) {
-    return db.comments.filter(comment => {
-      return comment.post === parent.id;
-    });
-  },
+  async comments(parent, args, { db }, info) {
+    return await db.getCommentsRelatedToPost(parent.id);
+  }
 };
 
 export { Post as default };
