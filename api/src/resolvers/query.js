@@ -4,14 +4,15 @@ const Query = {
   test() {
     return "graphql response";
   },
-  users(parent, { id, query }, { db, user }, info) {
+  users(parent, { id, query }, { db }, info) {
     if (!query) {
-      return db.users;
+      return db.getAllUser();
     }
 
-    return db.users.filter(user => {
-      return user.name.toLowerCase().includes(query.toLowerCase());
-    });
+    throw new Error("Not supported yet");
+    // return db.users.filter(user => {
+    //   return user.name.toLowerCase().includes(query.toLowerCase());
+    // });
   },
   user(parent, { id }, { db }, info) {
     const user = db.users.find(user => user.id === id);
@@ -21,7 +22,7 @@ const Query = {
   me(parent, args, { user }, info) {
     return user;
   },
-  async login(parent, args, { db }, info) {
+  async login(parent, args, context, info) {
     const { email, password } = args.data;
     const user = await authUtility.findByCredentials(email, password);
 

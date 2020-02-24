@@ -3,14 +3,9 @@ import authUtility from "../utilities/auth";
 
 const Mutation = {
   async createUser(parent, { data }, { db }, info) {
-    const user = {
-      id: uuidv4(),
-      ...data
-    };
+    const { name, email, password } = data;
 
-    user.password = await authUtility.hashPassword(user.password);
-    db.users.push(user);
-    return authUtility.createToken(user);
+    return db.createUser(name, email, password);
   },
   async deleteMe(parent, { confirmPassword }, { db, user }, info) {
     //TODO: add cascading deletion posts and comments
