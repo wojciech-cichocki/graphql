@@ -33,10 +33,10 @@ const getAllComments = async selectionSet => {
 };
 
 const getUserById = async (userId, selectionSet) => {
-  return await prisma.query.post(
+  return await prisma.query.user(
     {
       where: {
-        id: postId
+        id: userId
       }
     },
     selectionSet
