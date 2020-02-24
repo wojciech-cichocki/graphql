@@ -1,14 +1,14 @@
 import { GraphQLServer } from "graphql-yoga";
 import context from "./contex";
 import resolvers from "./resolvers";
-import middlewares from "./middlewares";
+import { loggingMiddleware, authMiddleware } from "./middlewares";
 const typeDefs = "./src/schema.graphql";
 
 const graphQLServerConfig = {
   typeDefs,
   resolvers,
   context,
-  middlewares
+  middlewares: [loggingMiddleware, authMiddleware]
 };
 
 const server = new GraphQLServer(graphQLServerConfig);
