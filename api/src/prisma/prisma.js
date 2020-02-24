@@ -77,14 +77,14 @@ const getPostRelatedToUser = async (userId, selectionSet) => {
   );
 };
 
-const getCommentRelatedToUser = async (postId, selectionSet) => {
-  if (!(await checkPostExist(postId))) throw new Error("Post not found");
+const getCommentRelatedToUser = async (userId, selectionSet) => {
+  if (!(await checkUserExist(userId))) throw new Error("Post not found");
 
   return await prisma.query.comments(
     {
       where: {
-        post: {
-          id: postId
+        author: {
+          id: userId
         }
       }
     },
