@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-// import db from "../db";
 import db from "../prisma/prisma";
 
 const config = {
@@ -23,14 +22,7 @@ const getUser = async request => {
 
     const userTokens = await db.getUserTokens(userId);
 
-    console.log(userTokens);
-
-    if (userTokens.includes(token)) {
-      console.log("token found");
-      const user = await db.getUserById(userId);
-      console.log(user);
-      return user;
-    }
+    if (userTokens.includes(token)) return await db.getUserById(userId);
   } catch (e) {}
   return null;
 };

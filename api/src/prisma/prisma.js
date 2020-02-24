@@ -1,5 +1,4 @@
 import { Prisma } from "prisma-binding";
-import uuidv4 from "uuid/v4";
 import auth from "../utilities/auth";
 
 const prisma = new Prisma({
@@ -12,7 +11,7 @@ const getAllUser = async (query, selectionSet) => {
 };
 
 const getUserByEmail = async (email, selectionSet) => {
-  const user = await prisma.query.user(
+  return await prisma.query.user(
     {
       where: {
         email
@@ -20,8 +19,6 @@ const getUserByEmail = async (email, selectionSet) => {
     },
     selectionSet
   );
-
-  return user;
 };
 
 const getAllPost = async selectionSet => {
@@ -96,11 +93,7 @@ const getCommentRelatedToUser = async (postId, selectionSet) => {
 };
 
 const getUserTokens = async userId => {
-  console.log("getUserTokens");
-  if (!(await checkUserExist(userId))) {
-    console.log("User not found");
-    throw new Error("User not found");
-  }
+  if (!(await checkUserExist(userId))) throw new Error("User not found");
 
   const userById = await prisma.query.user(
     {
@@ -124,11 +117,6 @@ const checkCommentExist = async commentId => {
   return await prisma.exists.Comment({ id: commentId });
 };
 
-// const checkUserIncludesToken = async (userId, token) => {
-//   const userTokens = await getUserTokens(userId);
-//   return userTokens.includes(token);
-// };
-
 const updateUserToken = async (userId, userTokens) => {
   return await prisma.mutation.updateUser({
     where: { id: userId },
@@ -144,18 +132,8 @@ const addTokenToUser = async userId => {
   const userTokens = await getUserTokens(userId);
   const newToken = auth.createToken(userId);
   userTokens.push(newToken);
-
   await updateUserToken(userId, userTokens);
 
-  console.log(userTokens);
-
-  return newToken;
-};
-
-const addTokenToNewUser = async userId => {
-  const newToken = await auth.createToken(userId);
-  const tokens = [newToken];
-  await updateUserToken(userId, tokens);
   return newToken;
 };
 
@@ -167,7 +145,7 @@ const createUser = async (name, email, password) => {
       password: await auth.hashPassword(password)
     }
   });
-  return await addTokenToNewUser(user.id);
+  return await addTokenToUser(user.id);
 };
 
 const createNewToken = async userId => {
@@ -192,16 +170,9 @@ const db = {
   getPostRelatedToUser,
   getCommentRelatedToUser,
 
-  // checkUserIncludesToken,
   getUserTokens,
   addTokenToUser,
   checkUserExist
 };
-
-const run = async () => {
-  // console.log(await createUser("name", "email15", "password"));
-};
-
-run();
 
 export { db as default };

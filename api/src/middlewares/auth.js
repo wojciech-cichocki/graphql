@@ -3,12 +3,9 @@ import authUtility from "../utilities/auth";
 const auth = async (resolve, parent, args, context, info) => {
   const user = await authUtility.getUser(context.request);
 
-  console.log("User in auth middleware");
-  console.log(user);
-
   if (!user) throw new Error("Not authenticated user");
-  context.user = user;
 
+  context.user = user;
   return resolve();
 };
 

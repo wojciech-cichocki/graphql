@@ -26,8 +26,6 @@ const Query = {
     const { email, password } = args.data;
     const user = await authUtility.findByCredentials(email, password);
 
-    console.log(user);
-
     return await db.addTokenToUser(user.id);
   },
   posts(parent, { query }, { db }, info) {
