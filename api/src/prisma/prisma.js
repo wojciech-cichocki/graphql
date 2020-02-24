@@ -83,7 +83,8 @@ const getCommentRelatedToUser = async (postId, selectionSet) => {
 };
 
 const getUserTokens = async userId => {
-  // if (!(await checkUserExist(userId))) throw new Error("User not found");
+  console.log("getUserTokens");
+  if (!(await checkUserExist(userId))) throw new Error("User not found");
 
   const userById = await prisma.query.user(
     {
@@ -114,21 +115,33 @@ const checkCommentExist = async commentId => {
 //   return userTokens.includes(token);
 // };
 
-const addTokenToUser = async userId => {
-  const userToken = await getUserTokens(userId);
-  const newToken = auth.createToken(userId);
-
-  userToken.push(newToken);
-
-  await prisma.mutation.updateUser({
+const updateUserToken = async (userId, userTokens) => {
+  return await prisma.mutation.updateUser({
     where: { id: userId },
     data: {
       tokens: {
-        set: userToken
+        set: userTokens
       }
     }
   });
+};
 
+const addTokenToUser = async userId => {
+  const userTokens = await getUserTokens(userId);
+  const newToken = auth.createToken(userId);
+  userTokens.push(newToken);
+
+  await updateUserToken(userId, userTokens);
+
+  console.log(userTokens);
+
+  return newToken;
+};
+
+const addTokenToNewUser = async userId => {
+  const newToken = await auth.createToken(userId);
+  const tokens = [newToken];
+  await updateUserToken(userId, tokens);
   return newToken;
 };
 
@@ -137,14 +150,13 @@ const createUser = async (name, email, password) => {
     data: {
       name,
       email,
-      password: await auth.hashPassword(password),
-      posts: [],
-      comments: [],
-      tokens: []
+      password: await auth.hashPassword(password)
+      // posts: [],
+      // comments: [],
+      // tokens: []
     }
   });
-
-  return await addTokenToUser(user.id);
+  return await addTokenToNewUser(user.id);
 };
 
 const createNewToken = async userId => {

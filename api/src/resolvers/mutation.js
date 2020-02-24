@@ -5,7 +5,9 @@ const Mutation = {
   async createUser(parent, { data }, { db }, info) {
     const { name, email, password } = data;
 
-    return db.createUser(name, email, password);
+    const user = await db.createUser(name, email, password);
+    console.log(user);
+    return user;
   },
   async deleteMe(parent, { confirmPassword }, { db, user }, info) {
     //TODO: add cascading deletion posts and comments
