@@ -1,14 +1,15 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import db from "../db";
+// import db from "../db";
+import db from "../prisma/prisma";
 
 const config = {
   secret: "secret",
   salt: 8
 };
 
-const getUser = request => {
+const getUser = async request => {
   const rowToken =
     request.headers["authorization"] || request.headers["x-access-token"];
 
@@ -18,23 +19,19 @@ const getUser = request => {
     const tokenPrefix = "Bearer ";
     const token = rowToken.replace(tokenPrefix, "");
     const decodedPayload = jwt.verify(token, config.secret);
+    const userId = decodedPayload.id;
 
-    const authUser = db.users.find(
-      user => user.id === decodedPayload.id && user.tokens.includes(token)
-    );
+    const existUser = await db.checkUserExist(userId);
+    const userTokens = await db.getUserTokens(userId);
 
-    return authUser !== undefined ? authUser : null;
-  } catch (e) {
-    return null;
-  }
+    if (existUser && userTokens.includes(token))
+      return await db.getUserById(userId);
+  } catch (e) {}
+  return null;
 };
 
-const createToken = user => {
-  const token = jwt.sign({ id: user.id }, config.secret);
-  if (user.tokens) user.tokens.push(token);
-  else user.tokens = [token];
-
-  return token;
+const createToken = userIs => {
+  return jwt.sign({ id: userIs }, config.secret);
 };
 
 const findByCredentials = async (email, password) => {
