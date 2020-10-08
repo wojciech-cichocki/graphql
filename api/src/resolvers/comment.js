@@ -1,13 +1,9 @@
 const Comment = {
-  author(parent, args, { db }, info) {
-    return db.users.find(user => {
-      return user.id === parent.author;
-    });
+  async author(parent, args, { db }, info) {
+    return await db.getUserRelatedToComment(parent.id);
   },
-  post(parent, args, { db }, info) {
-    return db.posts.find(post => {
-      return post.id === parent.post;
-    });
+  async post(parent, args, { db }, info) {
+    return await db.getPostRelatedToComment(parent.id);
   }
 };
 

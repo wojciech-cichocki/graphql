@@ -1,4 +1,4 @@
-import db from "./db";
+import db from "./prisma/prisma";
 
 const context = ({ request }) => {
   return {

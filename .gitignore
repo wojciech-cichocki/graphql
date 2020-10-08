@@ -1,6 +1,12 @@
 #webstorm
 .idea
 
+#database generated files
+/api/database/generated/
+
+#generted schema from prisma
+/api/generated/
+
 #npm project
 package-lock.json
 

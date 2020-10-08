@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js --ext js,graphql --exec babel-node"
+    "start-api": "nodemon src/index.js --ext js,graphql --exec babel-node",
+    "start-db": "cd database && prisma deploy",
+    "get-schema": "graphql get-schema -p prisma"
   },
   "keywords": [],
   "author": "",
@@ -16,9 +18,12 @@
     "bcrypt": "^3.0.8",
     "graphql-yoga": "latest",
     "jsonwebtoken": "^8.5.1",
+    "prisma-binding": "^2.3.16",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
+    "graphql-cli": "^3.0.14",
+    "mocha": "^7.0.1",
     "nodemon": "^1.17.5",
     "prettier": "1.19.1"
   }
